@@ -38,7 +38,7 @@ def sqrt_newton_sicp_like(x):
             return sqrt_iter(improve(guess, x), guess, x)
     
     return sqrt_iter(1.0, 0.0, x)
-assert abs(sqrt_newton_sicp_like(0.0) - 0.0) < tolerance # Assert in absolute change causes divide by 0
+assert abs(sqrt_newton_sicp_like(0.0) - 0.0) < tolerance # Assert in relative change causes divide by 0
 assert abs(sqrt_newton_sicp_like(4.0) - 2.0) / 2.0 < tolerance
 assert abs(sqrt_newton_sicp_like(100.0) - 10.0) / 10.0 < tolerance
 assert abs(sqrt_newton_sicp_like(1e-14) - 1e-7) / 1e-7 < tolerance
