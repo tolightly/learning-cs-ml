@@ -35,3 +35,8 @@ $|guess - \text{prev\_guess}| < tolerance$ (first version of `is_good_enough` in
 
 The relative error depends on the magnitude of the compared values, so it handles very large and very small values better. To get the relative value I divided the difference by one of the values:
 $|guess - \text{prev\_guess}| / guess < tolerance$ (second version of `is_good_enough` in `sqrt_newton_sicp_like`).
+##### Як відносна похибка ламається при x == 0 у `sqrt_newton`
+Розглянемо випадок `(abs(guess - previous_guess)) / guess < tolerance` при `x == 0`.
+Для початкового стану $\sigma_0$ `(abs(1.0 - 0.0)) / 1.0 = 1`.
+Для наступних ітерацій: `(abs(guess + (0 / guess)) / 2 - guess)) / guess = abs(guess / 2 - guess) / guess = guess / guess = 1`. Виходить, що значення `(abs(guess - previous_guess)) / guess` у ході циклу при x == 0 не буде змінюватися і завжди буде дорівнювати 1. Це призводить до того, що умова зупинки ніколи не спрацює.
+Причина цього: відносні значення типу (a + b)/a не працюють у випадках, коли b == 0, оскільки перетворюються на вираз a/a.

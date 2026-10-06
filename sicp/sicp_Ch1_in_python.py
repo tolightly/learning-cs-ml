@@ -6,7 +6,9 @@ tolerance = 1e-6
 def sqrt_newton_sicp_like(x):
     """Return the square root of x."""
     assert x >= 0, "Cannot compute square root of negative number."
-    
+    # Check for x == 0, because it implies divide by zero error
+    if x == 0:
+        return 0
     def average(a, b):
         """Return the arithmetic mean of a and b."""
         return (a + b) / 2
@@ -30,9 +32,7 @@ def sqrt_newton_sicp_like(x):
 
         If the guess is accurate enough, return it as the square root of x.
         Otherwise call sqrt_iter again with an improved guess."""
-        if x == 0:
-            return 0 
-        elif is_good_enough (guess, previous_guess):
+        if is_good_enough (guess, previous_guess):
             return guess
         else:
             return sqrt_iter(improve(guess, x), guess, x)
@@ -52,7 +52,7 @@ def sqrt_newton(x):
     guess = 1.0
     # previous_guess: guess from the previous iteration, for the stopping test.
     previous_guess = 0.0
-    # Special check for square root of zero.
+    # Check for x == 0, because it implies divide by zero error
     if x == 0:
         return 0
     # Stopping test: relative difference between guess and previous_guess.
