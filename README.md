@@ -1,37 +1,37 @@
 # learning-cs-ml
-Навчальний репозиторій: імплементації з SICP, математики й основ ML.
-Кожен файл самодостатній і містить assert-и.
+A learning repository: implementations from SICP, math, and ML basics.
+Every file is self-contained and contains asserts.
 
-## Як запустити
-python sicp/<файл>.py
+## How to run
+python sicp/<file>.py
 
-## Що я з'ясував
-### SICP 1.1.7 - Square root Newton's method
+## What I found out
+### SICP 1.1.7 - Square root, Newton's method
 #### return
-Після SICP мені важко переналаштуватися щодо використання `return` у функціях - я постійно забуваю, що функція має зупинятися і повертати значення через `return`.
-У LISP такого ключового слова і потреби у ньому немає, наскільки я знаю.
-Трохи дослідивши питання, я дізнався, що це зумовлене тим, що імперативні мови програмування оперують `statements` - інструкціями щодо виконання певних дій, які передаються процесору. Окремо від них існують `values` - значення. Функція (процедура) є просто набором інструкцій і сама по собі не повертає ніякого значенняя. Потрібна чітка інструкція щодо того, яке саме значення має повертати процедура. І саме такою інструкцією і є `return`.
-LISP не розділяє функції і значення, у LISP кожний вираз має значення. Тому функція без додаткової вказівки повертає своє значення.
-Це різниця парадигм мов і їх дизайну.
-#### Неефективність рекурсії у Python
-На Python можна реалізувати рекурсивну процедуру `sqrt_newton_sicp_like`, яка буде працювати, викликаючи сама себе. Але, як виявилося, ця процедура є неефективною, на відміну від її реалізації на Scheme.
-Виконання процедури із `tail recursion` є ефективним у Scheme через те, що для неї інтерпретатор застосовує ітеративний процес - у стеку і памяті існує лише один "знімок" стану процедури, кожне наступне виконання з оновленими даними замінює собою попередній.
-Python не підтримує `tail recursion`, тому навіть за відсутності відкладених викликів, інтерпретатор тримає у памяті "знімки" усіх ітерацій. Досягнувши ліміту у 100 000 ітерацій інтерпретатор повертає помилку щодо переповнення стеку рекурсії.
-#### Чому LISP не потребує циклів
-Дуже цікаво було спостерігати різницю у реалізації циклів і рекурсивних процедур у Scheme і Python.
-LISP не потребує окремих циклів, бо:
-- ВСЕ є виразом, який має значення
-- інтерпретатор підтримує `tail recursion` (`tail call optimisation`) - ітеративного виконання хвостової рекурсії
-- вбудовані функції вищого порядку, які призначені для ефективного опрацювання списків
-- такий підхід не перешкоджає збереженню принципу незмінності стану
-Це забезпечує математичну виразність без переймання тим, як саме процесор буде виконувати операції.
+After SICP I find it hard to readjust to `return` in Python: I keep forgetting that a function has to hand back a value through `return`. In Lisp there is no such keyword, and no need for it, as far as I know.
+After some digging I learned the reason: imperative languages work with `statements` - instructions to the interpreter to perform actions. Separate from them there are `values`. A function body is just a sequence of statements and does not produce a value by itself, so I have to say explicitly which value to hand back. That is what `return` does (a function without `return` gives back `None`).
+In Scheme every expression has a value, so the value of the last expression in a procedure body is the result automatically.
+This is a difference in language design and paradigm.
 
-Імперативні мови зобовязані мати `while`, `for` loops, оскільки:
-- слідують архітектурі фон Неймана й імітують роботу компютера, який послідовно виконує інструкції і записує їх результат у комірки памяті. Тому такі цикли можна вважати описом низькорівневої роботи компютера - цикли `while`, `for` є відображенням процесорних команд `JUMP` , у звязку із чим вони є надзвичайно ефективними.
-- такий підхід також узгоджується із духом імперативних мов програмування - зміна стану. Так, цикли пвиконують безпечну локальну зміну змінних у ході свого викомнання.
-#### Абсолютна і відносна похибка (дельта)
-Абсолютна похибка (різниця, дельта) не залежить від величини порівнюваних чисел, що може призвести до неправильної поведінки при опрацюванні дуже великих чи дуже малих значень:
-$guess - prev_guess < tolerance$ (перша версія `is_good_enough` у `sqrt_newton_sicp_like`).
+#### Recursion is inefficient in Python
+I can implement the recursive procedure `sqrt_newton_sicp_like` in Python and it works, calling itself. But, as it turned out, it is less efficient than its Scheme counterpart.
+Tail recursion is efficient in Scheme because the interpreter runs it as an iterative process: only one "snapshot" of the procedure state exists in the stack and memory, and each next call with updated arguments replaces the previous one.
+Python does not perform tail call optimisation, so even when there are no deferred operations the interpreter keeps a frame for every call. When the recursion limit is reached (1000 by default, see `sys.getrecursionlimit()`), Python raises `RecursionError`.
 
-Відносна похибка залежить від величини порівнюваних значень, що дозволяє більш коректно опрацьовувати дуже великі чи дуже малі значення. Для отримання відносного значення я використовував відношення різниці значень до одного з них:
-$(guess - prev_guess) / guess < tolerance$ (друга версія `is_good_enough` у `sqrt_newton_sicp_like`).
+#### Why Lisp does not need loops
+It was interesting to compare loops and recursive procedures in Scheme and Python.
+Scheme can do without dedicated loops because (my current understanding):
+- everything is an expression with a value;
+- the interpreter does tail call optimisation, so tail recursion runs as an iterative process;
+- there are built-in higher-order functions for processing lists.
+
+Imperative languages have `while` and `for` loops because (my hypothesis, to verify):
+- they follow the von Neumann architecture: a computer executes instructions in sequence and writes the results to memory cells, so loops describe low-level machine behaviour. `while` and `for` closely resemble `JUMP` instructions, which makes them very efficient;
+- this fits the spirit of imperative languages, which is state mutation: loops change local variables as they run.
+
+#### Absolute and relative error (delta)
+The absolute error (difference, delta) does not depend on the magnitude of the numbers being compared, so a fixed threshold can misbehave for very large or very small values:
+$|guess - \text{prev\_guess}| < tolerance$ (first version of `is_good_enough` in `sqrt_newton_sicp_like`).
+
+The relative error depends on the magnitude of the compared values, so it handles very large and very small values better. To get the relative value I divided the difference by one of the values:
+$|guess - \text{prev\_guess}| / guess < tolerance$ (second version of `is_good_enough` in `sqrt_newton_sicp_like`).

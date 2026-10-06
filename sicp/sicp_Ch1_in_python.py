@@ -1,4 +1,6 @@
 # region Square root procedure - LISP-like structure (SICP 1.1.7)
+"""Square root via Newton's method (SICP 1.1.7): a recursive LISP-like
+implementation and an iterative Python-like one, checked with asserts."""
 tolerance = 1e-6
 
 def sqrt_newton_sicp_like(x):
@@ -6,7 +8,7 @@ def sqrt_newton_sicp_like(x):
     assert x >= 0, "Cannot compute square root of negative number."
     
     def average(a, b):
-        """Takes two numbers and returns arithmetic mean of them"""
+        """Return the arithmetic mean of a and b."""
         return (a + b) / 2
 
     def improve(guess, x):
@@ -14,18 +16,20 @@ def sqrt_newton_sicp_like(x):
         return average(guess, (x / guess))
 
     def is_good_enough(guess, previous_guess):
-        """Predicate that verifies the accuracy of an guess based on it's magnitude of change"""
-        # The absolute error value is unsuitable for handling very large and very small values; the relative value must be used instead.
+        """Return True when the relative change between successive guesses is below tolerance."""
+        # The absolute error is unsuitable for very large and very small values; use the relative change instead.
         return (abs(guess - previous_guess)) / guess < tolerance
     
     def sqrt_iter(guess, previous_guess, x):
-        """Helper procedure that recursively improves guess until it becomes sufficiently accurate
-        Formal parameters:
-            x: radicand - значення, квадратний корінь якого ми шукаємо.
-            guess: значення, щодо якого ми припускаємо, що воно є квадратним коренем x і це твердження слід перевірити.
-            previous-guess: значення guess з попередньої ітерації для перевірки умови зупинки.
-    Якщо наше припущення достатньо точне, то ми повертаємо це припущення як результат - квадратний корінь x.
-    Якщо припущення неточне, то рекурсивно викликаємо всю процедуру знову, але передаємо покращене припущення."""
+        """Recursively improve guess until it is accurate enough.
+
+        Parameters:
+            x: radicand, the number whose square root is sought.
+            guess: current candidate for the square root of x.
+            previous_guess: guess from the previous iteration, used for the stopping test.
+
+        If the guess is accurate enough, return it as the square root of x.
+        Otherwise call sqrt_iter again with an improved guess."""
         if x == 0:
             return 0 
         elif is_good_enough (guess, previous_guess):
@@ -44,18 +48,18 @@ def sqrt_newton(x):
     """Return the square root of x."""
     assert x >= 0, "Cannot compute square root of negative number."
 
-    # We use the guess to estimate the value that is the root of x.
+    # guess: current estimate of the square root of x.
     guess = 1.0
-    # We use the previous_guess to saving the value of the guess from previous iteration.
+    # previous_guess: guess from the previous iteration, for the stopping test.
     previous_guess = 0.0
-    # Guard: is_good_enough: relative difference between guess and previous_guess. 
-    # When the difference between successive approximations changes very little during iteration, we have found a sufficiently accurate value of the root.
+    # Special check for square root of zero.
     if x == 0:
         return 0
-    
+    # Stopping test: relative difference between guess and previous_guess.
+    # When successive approximations barely change, the root is accurate enough.
     while abs(guess - previous_guess) / guess >= tolerance:
-        previous_guess = guess # Saving guess for next iteration
-        guess = (guess + (x / guess)) / 2 # Improving guess based on Newnon's method
+        previous_guess = guess # save guess for the next iteration
+        guess = (guess + (x / guess)) / 2 # improve guess with Newton's method
     return guess
 
 assert abs(sqrt_newton(0.0) - 0.0) < tolerance      
