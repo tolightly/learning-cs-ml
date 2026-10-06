@@ -40,9 +40,10 @@
     (if (good-enough? guess previous-guess)
         guess
         (sqrt-iter (improve guess x) guess x)))
-  
-  (sqrt-iter 1.0 0.0 x))
 
+  (if (= x 0)
+      0
+      (sqrt-iter 1.0 0.0 x)))
 
 
 

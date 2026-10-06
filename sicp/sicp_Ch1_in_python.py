@@ -26,17 +26,17 @@ def sqrt_newton_sicp_like(x):
             previous-guess: значення guess з попередньої ітерації для перевірки умови зупинки.
     Якщо наше припущення достатньо точне, то ми повертаємо це припущення як результат - квадратний корінь x.
     Якщо припущення неточне, то рекурсивно викликаємо всю процедуру знову, але передаємо покращене припущення."""
-        if is_good_enough (guess, previous_guess):
-            print('Result of sqrt_newton_sicp_like(', x,  ') is: ', guess)
+        if x == 0:
+            return 0 
+        elif is_good_enough (guess, previous_guess):
             return guess
         else:
             return sqrt_iter(improve(guess, x), guess, x)
     
     return sqrt_iter(1.0, 0.0, x)
-
+assert abs(sqrt_newton_sicp_like(0.0) - 0.0) < tolerance
 assert abs(sqrt_newton_sicp_like(4.0) - 2.0) < tolerance
 assert abs(sqrt_newton_sicp_like(100.0) - 10.0) < tolerance
-
 # endregion
 
 #region Square Root procedure - Python-like structure (SICP 1.1.7)
@@ -50,12 +50,15 @@ def sqrt_newton(x):
     previous_guess = 0.0
     # Guard: is_good_enough: relative difference between guess and previous_guess. 
     # When the difference between successive approximations changes very little during iteration, we have found a sufficiently accurate value of the root.
+    if x == 0:
+        return 0
+    
     while abs(guess - previous_guess) / guess >= tolerance:
         previous_guess = guess # Saving guess for next iteration
         guess = (guess + (x / guess)) / 2 # Improving guess based on Newnon's method
-    print('Result of sqrt_newton(', x, ') is: ', guess)
     return guess
-        
+
+assert abs(sqrt_newton(0.0) - 0.0) < tolerance      
 assert abs(sqrt_newton(4.0) - 2.0) < tolerance
 assert abs(sqrt_newton(100.0) - 10.0) < tolerance
 # endregion
