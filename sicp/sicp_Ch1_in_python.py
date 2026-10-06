@@ -6,7 +6,7 @@ tolerance = 1e-6
 def sqrt_newton_sicp_like(x):
     """Return the square root of x."""
     assert x >= 0, "Cannot compute square root of negative number."
-    # Check for x == 0, because it implies divide by zero error
+    # Check for x == 0, because in this case loop never stops
     if x == 0:
         return 0
     def average(a, b):
@@ -38,9 +38,11 @@ def sqrt_newton_sicp_like(x):
             return sqrt_iter(improve(guess, x), guess, x)
     
     return sqrt_iter(1.0, 0.0, x)
-assert abs(sqrt_newton_sicp_like(0.0) - 0.0) < tolerance
-assert abs(sqrt_newton_sicp_like(4.0) - 2.0) < tolerance
-assert abs(sqrt_newton_sicp_like(100.0) - 10.0) < tolerance
+assert abs(sqrt_newton_sicp_like(0.0) - 0.0) < tolerance # Assert in absolute change causes divide by 0
+assert abs(sqrt_newton_sicp_like(4.0) - 2.0) / 2.0 < tolerance
+assert abs(sqrt_newton_sicp_like(100.0) - 10.0) / 10.0 < tolerance
+assert abs(sqrt_newton_sicp_like(1e-14) - 1e-7) / 1e-7 < tolerance
+assert abs(sqrt_newton_sicp_like(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
 
 #region Square Root procedure - Python-like structure (SICP 1.1.7)
@@ -63,6 +65,8 @@ def sqrt_newton(x):
     return guess
 
 assert abs(sqrt_newton(0.0) - 0.0) < tolerance      
-assert abs(sqrt_newton(4.0) - 2.0) < tolerance
-assert abs(sqrt_newton(100.0) - 10.0) < tolerance
+assert abs(sqrt_newton(4.0) - 2.0) / 2.0 < tolerance
+assert abs(sqrt_newton(100.0) - 10.0) / 10.0 < tolerance
+assert abs(sqrt_newton(1e-14) - 1e-7) / 1e-7 < tolerance
+assert abs(sqrt_newton(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
