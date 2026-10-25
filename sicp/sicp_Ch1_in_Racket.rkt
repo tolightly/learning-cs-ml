@@ -46,7 +46,7 @@
       (sqrt-iter 1.0 0.0 x)))
 
 ;;; -------- Finding fixed point of functions SICP 1.3.3 --------
-;; Procedure for finding the fixed point given function
+;; Procedure for finding the fixed point of given function
 (define (fixed-point f first-guess)
   ; Helper predicate that verifies the accuracy of an guess based on it's magnitude of change
   (define (good-enough? next-guess guess)
@@ -59,7 +59,8 @@
           next-guess
           (try next-guess))))
   (try first-guess))
-; Example of defining function to evaluate square root with fixed-point finction
+; Example of defining function to evaluate square root with fixed-point function
 (define (sqrt x)
   (fixed-point (lambda (y) (average y (/ x y))) 1.0))
-
+; Example of defining golden ratio as fixed point
+(define golden-ratio (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0))

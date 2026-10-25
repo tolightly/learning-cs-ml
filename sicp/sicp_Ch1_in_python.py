@@ -70,3 +70,13 @@ assert abs(sqrt_newton(100.0) - 10.0) / 10.0 < tolerance
 assert abs(sqrt_newton(1e-14) - 1e-7) / 1e-7 < tolerance
 assert abs(sqrt_newton(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
+
+# region Finding fixed point of functions SICP 1.3.3
+"""Procedure for finding the fixed point of given function. Checked with asserts."""
+# Треба тримати в голові різницю в побудові функцій. 
+# Тут очікується визначення змінних і їх мутація у ході циклу.
+def fixed_point(f: function, first_guess=1.0) -> float:
+    
+
+
+# endregion
