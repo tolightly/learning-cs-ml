@@ -1,3 +1,4 @@
+from collections.abc import Callable
 # region Square root procedure - LISP-like structure (SICP 1.1.7)
 """Square root via Newton's method (SICP 1.1.7): a recursive LISP-like
 implementation and an iterative Python-like one, checked with asserts."""
@@ -72,11 +73,35 @@ assert abs(sqrt_newton(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
 
 # region Finding fixed point of functions SICP 1.3.3
-"""Procedure for finding the fixed point of given function. Checked with asserts."""
+"""Return a fixed point of given function"""
 # Треба тримати в голові різницю в побудові функцій. 
 # Тут очікується визначення змінних і їх мутація у ході циклу.
-def fixed_point(f: function, first_guess=1.0) -> float:
-    
+def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
+    # Check for f is callable
+    assert callable(f)
+    # Variable for a previous guess
+    previous_guess = first_guess
+    # Variable for a current guess
+    guess = f(previous_guess)
+    # Loop
+    # Guard: stops the loop when differene between guess and previous guess is lesser that tolerance
+    while abs(guess - previous_guess) / guess >= tolerance:
+        # Updating previous_guess and guess
+        previous_guess = guess
+        guess = f(guess)
+    # Returning result
+    return guess
 
+def sqrt_fixed_point(x):
+    """Return the square root of x using the fixed point procedure."""
+    assert x >= 0, "Cannot compute square root of negative number."
+    if x == 0: 
+        return 0
+    return fixed_point(lambda y: (y + x/y) / 2) # Я знову забув написати return.
 
+assert abs(sqrt_fixed_point(0.0) - 0.0) < tolerance      
+assert abs(sqrt_fixed_point(4.0) - 2.0) / 2.0 < tolerance
+assert abs(sqrt_fixed_point(100.0) - 10.0) / 10.0 < tolerance
+assert abs(sqrt_fixed_point(1e-14) - 1e-7) / 1e-7 < tolerance
+assert abs(sqrt_fixed_point(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
