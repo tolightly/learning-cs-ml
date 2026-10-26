@@ -22,7 +22,7 @@
 (define (sqrt-newton x)
   ; Helper predicate that verifies the accuracy of an guess based on it's magnitude of change
   (define (good-enough? guess previous-guess)
-    (< (abs (- guess previous-guess)) tolerance))
+    (< (/ (abs (- guess previous-guess)) guess) tolerance)) ;In this case need to check relative error for very small or big values
 
   ; Helper procedure that improve guess using Newton's method - averaging guess and (/ x guess)
   (define (improve guess x)
@@ -50,7 +50,13 @@
 (define (fixed-point f first-guess)
   ; Helper predicate that verifies the accuracy of an guess based on it's magnitude of change
   (define (good-enough? next-guess guess)
-    (< (abs (- next-guess guess)) tolerance))
+    ;In this case need to check relative error for very small or big values
+    ;If next-guess is negative, then (/ (abs (- next-guess guess)) next-guess) is always less than tolerance. So we need to use (/ (abs (- next-guess guess)) (abs next-guess)) 
+    ;The problem with relative error: when (= (/ (abs (- next-guess guess)) guess) 1) loop never ends. So we need to additional check.
+    ;Another problem: 
+    (if (or (= 0 next-guess)(= (/ (abs (- next-guess guess)) (abs next-guess)) 1))
+        (< (abs (- next-guess guess)) tolerance) ;From note sicp_1_1_7.md "How the relative error breaks down at x == 0 in sqrt_newton"
+        (< (/ (abs (- next-guess guess)) (abs next-guess)) tolerance)))
   ; An iterative procedure that is intended to improve a guess regarding a fixed point by applying f to the previous guess.
   ; If the guess values change only slightly (within the tolerance), the procedure terminates and returns the guess as result.
   (define (try guess)
@@ -60,7 +66,15 @@
           (try next-guess))))
   (try first-guess))
 ; Example of defining function to evaluate square root with fixed-point function
-(define (sqrt x)
-  (fixed-point (lambda (y) (average y (/ x y))) 1.0))
+(define (sqrt-fixed-point x)
+  (if (= x 0) 0
+  (fixed-point (lambda (y) (average y (/ x y))) 1.0)))
 ; Example of defining golden ratio as fixed point
 (define golden-ratio (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0))
+(sqrt-newton 0.00000000001)
+(sqrt-fixed-point 0.00000000001)
+(sqrt-fixed-point 0.5)
+(fixed-point cos 1.0)
+(fixed-point (lambda (x) (- (/ x 2) 1)) 0.0)
+(fixed-point (lambda (x) (/ x 2)) 0)
+

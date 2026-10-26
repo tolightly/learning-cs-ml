@@ -85,7 +85,7 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
     guess = f(previous_guess)
     # Loop
     # Guard: stops the loop when differene between guess and previous guess is lesser that tolerance
-    while abs(guess - previous_guess) / guess >= tolerance:
+    while abs(guess - previous_guess) / abs(guess) >= tolerance:
         # Updating previous_guess and guess
         previous_guess = guess
         guess = f(guess)
