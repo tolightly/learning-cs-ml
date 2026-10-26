@@ -73,10 +73,10 @@ assert abs(sqrt_newton(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
 
 # region Finding fixed point of functions SICP 1.3.3
-"""Return a fixed point of given function"""
 # Треба тримати в голові різницю в побудові функцій. 
 # Тут очікується визначення змінних і їх мутація у ході циклу.
 def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
+    """Return a fixed point of given function"""
     # Check for f is callable
     assert callable(f)
     # Variable for a previous guess
@@ -84,20 +84,21 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
     # Variable for a current guess
     guess = f(previous_guess)
     # Loop
-    # Guard: stops the loop when differene between guess and previous guess is lesser that tolerance
-    while abs(guess - previous_guess) / abs(guess) >= tolerance:
+    # Guard: stops the loop when difference between guess and previous guess is less that tolerance
+    while abs((guess - previous_guess) / guess) >= tolerance:
         # Updating previous_guess and guess
         previous_guess = guess
         guess = f(guess)
     # Returning result
     return guess
+# assert fixed_point(lambda x: x/2)
 
 def sqrt_fixed_point(x):
     """Return the square root of x using the fixed point procedure."""
     assert x >= 0, "Cannot compute square root of negative number."
     if x == 0: 
         return 0
-    return fixed_point(lambda y: (y + x/y) / 2) # Я знову забув написати return.
+    return fixed_point(lambda y: (y + x/y) / 2)
 
 assert abs(sqrt_fixed_point(0.0) - 0.0) < tolerance      
 assert abs(sqrt_fixed_point(4.0) - 2.0) / 2.0 < tolerance

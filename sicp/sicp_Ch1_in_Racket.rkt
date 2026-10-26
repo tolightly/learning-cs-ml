@@ -54,7 +54,7 @@
     ;If next-guess is negative, then (/ (abs (- next-guess guess)) next-guess) is always less than tolerance. So we need to use (/ (abs (- next-guess guess)) (abs next-guess)) 
     ;The problem with relative error: when (= (/ (abs (- next-guess guess)) guess) 1) loop never ends. So we need to additional check.
     ;Another problem: 
-    (if (or (= 0 next-guess)(= (/ (abs (- next-guess guess)) (abs next-guess)) 1))
+    (if (= 0 next-guess)
         (< (abs (- next-guess guess)) tolerance) ;From note sicp_1_1_7.md "How the relative error breaks down at x == 0 in sqrt_newton"
         (< (/ (abs (- next-guess guess)) (abs next-guess)) tolerance)))
   ; An iterative procedure that is intended to improve a guess regarding a fixed point by applying f to the previous guess.
@@ -67,14 +67,18 @@
   (try first-guess))
 ; Example of defining function to evaluate square root with fixed-point function
 (define (sqrt-fixed-point x)
-  (if (= x 0) 0
-  (fixed-point (lambda (y) (average y (/ x y))) 1.0)))
+  (if (< x 0)
+      (error "Square root can evaluate only from positive numbers")
+      (if (= x 0) 0
+          (fixed-point (lambda (y) (average y (/ x y))) 1.0))))  
 ; Example of defining golden ratio as fixed point
 (define golden-ratio (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0))
 (sqrt-newton 0.00000000001)
 (sqrt-fixed-point 0.00000000001)
-(sqrt-fixed-point 0.5)
+(sqrt-fixed-point 10000000000000000)
+(sqrt-fixed-point 16)
 (fixed-point cos 1.0)
-(fixed-point (lambda (x) (- (/ x 2) 1)) 0.0)
+(fixed-point (lambda (x) (- (/ x 2) 1)) -10.0)
 (fixed-point (lambda (x) (/ x 2)) 0)
+(fixed-point (lambda (x) (* x x) x) 1.0)
 
