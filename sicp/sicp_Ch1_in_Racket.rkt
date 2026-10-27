@@ -80,5 +80,5 @@
 (fixed-point cos 1.0)
 (fixed-point (lambda (x) (- (/ x 2) 1)) -10.0)
 (fixed-point (lambda (x) (/ x 2)) 0)
-(fixed-point (lambda (x) (* x x) x) 1.0)
+(fixed-point (lambda (x) (* x x)) 1.0)
 
