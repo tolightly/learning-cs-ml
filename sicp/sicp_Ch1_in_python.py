@@ -82,18 +82,17 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
     # Check for f is callable
     if not callable(f):
         raise TypeError("Argument f must be callable (function)")
-
     previous_guess = first_guess
     guess = f(previous_guess)
     # Predicate that defines condition for stopping loop
-    def is_good_enough(guess, previous_guess):
+    def is_not_good_enough(guess, previous_guess):
         if guess == 0:
             return abs(guess - previous_guess) >= tolerance
         else:
             return abs((guess - previous_guess) / guess) >= tolerance
     # Loop
     # Guard: stops the loop when differene between guess and previous guess is lesser that tolerance
-    while is_good_enough(guess, previous_guess):
+    while is_not_good_enough(guess, previous_guess):
         # Updating previous_guess and guess
         previous_guess = guess
         guess = f(guess)
