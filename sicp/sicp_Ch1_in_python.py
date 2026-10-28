@@ -115,7 +115,6 @@ def sqrt_fixed_point(x):
 
 assert abs(sqrt_fixed_point(0.0) - 0.0) < tolerance   
 assert abs(sqrt_fixed_point(4.0) - 2.0) / 2.0 < tolerance
-assert abs(sqrt_fixed_point(100.0) - 10.0) / 10.0 < tolerance
 assert abs(sqrt_fixed_point(1e-14) - 1e-7) / 1e-7 < tolerance
-assert abs(sqrt_fixed_point(1e-12) - 1e-6) / 1e-6 < tolerance
+assert abs(sqrt_fixed_point(10000000000000000) - 100000000) / 100000000 < tolerance
 # endregion
