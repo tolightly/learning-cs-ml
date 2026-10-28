@@ -80,10 +80,10 @@
 (define golden-ratio (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0))
 ; Asserts
 (assert (< (abs (- (sqrt-fixed-point 0.00000000001) 3.16e-6)) tolerance))
+(assert (< (abs (- (sqrt-fixed-point 1e-14) 1e-7)) tolerance))
 (assert (< (abs (- (sqrt-fixed-point 10000000000000000) 100000000)) tolerance))
-(assert (< (- golden-ratio 1.6180338134) tolerance))
-(assert (< (- (fixed-point cos 1.0) 0.7390848668) tolerance))
-(assert (< (- (fixed-point (lambda (x) (- (/ x 2) 1)) -10.0) -2.0) tolerance))
-(assert (< (- (fixed-point (lambda (x) (/ x 2)) 0.0) 1.0) tolerance))
-(assert (< (- (fixed-point (lambda (x) (* x x)) 0.9) 0.0) tolerance))
-
+(assert (< (abs(- golden-ratio 1.6180339887)) tolerance))
+(assert (< (abs (- (fixed-point cos 1.0) 0.739085)) tolerance))
+(assert (< (abs (- (fixed-point (lambda (x) (- (/ x 2) 1)) -10.0) -2.0)) 1e-5))
+(assert (< (abs (- (fixed-point (lambda (x) (/ x 2)) 1.0) 0.0)) tolerance))
+(assert (< (abs (- (fixed-point (lambda (x) (* x x)) 0.9) 0.0)) tolerance))

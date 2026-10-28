@@ -91,7 +91,7 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
         else:
             return abs((guess - previous_guess) / guess) >= tolerance
     # Loop
-    # Guard: stops the loop when differene between guess and previous guess is lesser that tolerance
+    # Guard: stops the loop when difference between guess and previous guess is less that tolerance
     while is_not_good_enough(guess, previous_guess):
         # Updating previous_guess and guess
         previous_guess = guess
@@ -99,9 +99,9 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
     # Returning result
     return guess
 ## Asserts
-assert abs(fixed_point(lambda x: 1/x + 1) - 1.618033) < tolerance
+assert abs(fixed_point(lambda x: 1/x + 1) - 1.6180339887) < tolerance
 assert abs(fixed_point(lambda x: x/2 - 1, -10) + 2.0) < 1e-5
-assert abs(fixed_point(math.cos) - 0.739084868) < tolerance
+assert abs(fixed_point(math.cos) - 0.739085) < tolerance
 assert abs(fixed_point(lambda x: x/2, 1.0) - 0) < tolerance
 assert abs(fixed_point(lambda x: x/2, -10.0) - 0) < tolerance
 assert abs(fixed_point(lambda x: x*x, 0.9) - 0.0) < tolerance
