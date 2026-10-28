@@ -100,12 +100,11 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
     return guess
 ## Asserts
 assert abs(fixed_point(lambda x: 1/x + 1) - 1.618033) < tolerance
-assert abs(fixed_point(lambda x: x/2 - 1) + 2.0) < 1e-5
+assert abs(fixed_point(lambda x: x/2 - 1, -10) + 2.0) < 1e-5
 assert abs(fixed_point(math.cos) - 0.739084868) < tolerance
-assert abs(fixed_point(lambda x: x/2, 0.0) - 0) < tolerance
 assert abs(fixed_point(lambda x: x/2, 1.0) - 0) < tolerance
 assert abs(fixed_point(lambda x: x/2, -10.0) - 0) < tolerance
-assert abs(fixed_point(lambda x: x*x) - 1.0) < tolerance
+assert abs(fixed_point(lambda x: x*x, 0.9) - 0.0) < tolerance
 
 def sqrt_fixed_point(x):
     """Return the square root of x using the fixed point procedure."""

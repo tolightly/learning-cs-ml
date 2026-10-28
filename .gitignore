@@ -226,6 +226,7 @@ __marimo__/
 \#*.rkt#
 \#*.rkt#*#
 *.rkt-autorec.*
+*.2
 
 
 # Compiled racket bytecode

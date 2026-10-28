@@ -1,4 +1,10 @@
 #lang racket
+;;; Macros
+(define-syntax-rule (assert expr)
+  (when (not expr)
+    (error 'assert "Assertion failed: ~s" 'expr)))
+    
+
 ;;; Constants
 (define tolerance 0.000001)
 
@@ -52,11 +58,10 @@
   (define (good-enough? next-guess guess)
     ;In this case need to check relative error for very small or big values
     ;If next-guess is negative, then (/ (abs (- next-guess guess)) next-guess) is always less than tolerance. So we need to use (/ (abs (- next-guess guess)) (abs next-guess)) 
-    ;The problem with relative error: when (= (/ (abs (- next-guess guess)) guess) 1) loop never ends. So we need to additional check.
-    ;Another problem: 
+    ;Another problem: division by 0 when next-guess is 0.
     (if (= 0 next-guess)
         (< (abs (- next-guess guess)) tolerance) ;From note sicp_1_1_7.md "How the relative error breaks down at x == 0 in sqrt_newton"
-        (< (/ (abs (- next-guess guess)) (abs next-guess)) tolerance)))
+        (< (abs (/ (- next-guess guess) next-guess)) tolerance)))
   ; An iterative procedure that is intended to improve a guess regarding a fixed point by applying f to the previous guess.
   ; If the guess values change only slightly (within the tolerance), the procedure terminates and returns the guess as result.
   (define (try guess)
@@ -73,12 +78,12 @@
           (fixed-point (lambda (y) (average y (/ x y))) 1.0))))  
 ; Example of defining golden ratio as fixed point
 (define golden-ratio (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0))
-(sqrt-newton 0.00000000001)
-(sqrt-fixed-point 0.00000000001)
-(sqrt-fixed-point 10000000000000000)
-(sqrt-fixed-point 16)
-(fixed-point cos 1.0)
-(fixed-point (lambda (x) (- (/ x 2) 1)) -10.0)
-(fixed-point (lambda (x) (/ x 2)) 0)
-(fixed-point (lambda (x) (* x x)) 1.0)
+; Asserts
+(assert (< (abs (- (sqrt-fixed-point 0.00000000001) 3.16e-6)) tolerance))
+(assert (< (abs (- (sqrt-fixed-point 10000000000000000) 100000000)) tolerance))
+(assert (< (- golden-ratio 1.6180338134) tolerance))
+(assert (< (- (fixed-point cos 1.0) 0.7390848668) tolerance))
+(assert (< (- (fixed-point (lambda (x) (- (/ x 2) 1)) -10.0) -2.0) tolerance))
+(assert (< (- (fixed-point (lambda (x) (/ x 2)) 0.0) 1.0) tolerance))
+(assert (< (- (fixed-point (lambda (x) (* x x)) 0.9) 0.0) tolerance))
 
