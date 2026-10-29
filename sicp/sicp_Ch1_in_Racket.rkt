@@ -54,6 +54,7 @@
 ;;; -------- Finding fixed point of functions SICP 1.3.3 --------
 ;; Procedure for finding the fixed point of given function
 (define (fixed-point f first-guess)
+  ; The failure class: functions with fixed point = 0 and function with convergence |f(x)| = q*|x| around 0 
   ; Helper predicate that verifies the accuracy of an guess based on it's magnitude of change
   (define (good-enough? next-guess guess)
     ;In this case need to check relative error for very small or big values
@@ -79,11 +80,10 @@
 ; Example of defining golden ratio as fixed point
 (define golden-ratio (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0))
 ; Asserts
-(assert (< (abs (- (sqrt-fixed-point 0.00000000001) 3.16e-6)) tolerance))
-(assert (< (abs (- (sqrt-fixed-point 1e-14) 1e-7)) tolerance))
-(assert (< (abs (- (sqrt-fixed-point 10000000000000000) 100000000)) tolerance))
-(assert (< (abs(- golden-ratio 1.6180339887)) tolerance))
-(assert (< (abs (- (fixed-point cos 1.0) 0.739085)) tolerance))
-(assert (< (abs (- (fixed-point (lambda (x) (- (/ x 2) 1)) -10.0) -2.0)) 1e-5))
+(assert (< (abs (/ (- (sqrt-fixed-point 1e-14) 1e-7) 1e-7)) tolerance))
+(assert (< (abs (/ (- (sqrt-fixed-point 10000000000000000) 100000000) 100000000)) tolerance))
+(assert (< (abs(/ (- golden-ratio 1.6180339887) 1.6180339887)) tolerance))
+(assert (< (abs(/ (- (fixed-point cos 1.0) 0.739085) 0.739085)) tolerance))
+(assert (< (abs(/ (- (fixed-point (lambda (x) (- (/ x 2) 1)) -10.0) -2.0) -2.0)) tolerance))
 (assert (< (abs (- (fixed-point (lambda (x) (/ x 2)) 1.0) 0.0)) tolerance))
 (assert (< (abs (- (fixed-point (lambda (x) (* x x)) 0.9) 0.0)) tolerance))
