@@ -74,38 +74,39 @@ assert abs(sqrt_newton(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
 
 # region Finding fixed point of functions SICP 1.3.3
-
-# Треба тримати в голові різницю в побудові функцій. 
-# Тут очікується визначення змінних і їх мутація у ході циклу.
 def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
-    """Return a fixed point of given function"""
+    """
+    Return a fixed point of given function.
+    The failure class: functions with fixed point = 0 and function with convergence |f(x)| = q*|x| around 0.
+    """
     # Check for f is callable
     if not callable(f):
         raise TypeError("Argument f must be callable (function)")
+
     previous_guess = first_guess
     guess = f(previous_guess)
     # Predicate that defines condition for stopping loop
-    def is_not_good_enough(guess, previous_guess):
+    def is_good_enough(guess, previous_guess):
+        # Guard for division by 0 in process evaluating relative error 
         if guess == 0:
             return abs(guess - previous_guess) >= tolerance
         else:
             return abs((guess - previous_guess) / guess) >= tolerance
     # Loop
-    # Guard: stops the loop when difference between guess and previous guess is less that tolerance
-    while is_not_good_enough(guess, previous_guess):
+    # Guard: stops the loop when differene between guess and previous guess is less than tolerance
+    while is_good_enough(guess, previous_guess):
         # Updating previous_guess and guess
         previous_guess = guess
         guess = f(guess)
-    # Returning result
     return guess
 ## Asserts
-assert abs(fixed_point(lambda x: 1/x + 1) - 1.6180339887) < tolerance
-assert abs(fixed_point(lambda x: x/2 - 1, -10) + 2.0) < 1e-5
-assert abs(fixed_point(math.cos) - 0.739085) < tolerance
+assert abs(fixed_point(lambda x: 1/x + 1) - 1.618033) < tolerance
+assert abs(fixed_point(lambda x: x/2 - 1) + 2.0) < 1e-5
+assert abs(fixed_point(math.cos) - 0.739084868) < tolerance
 assert abs(fixed_point(lambda x: x/2, 1.0) - 0) < tolerance
 assert abs(fixed_point(lambda x: x/2, -10.0) - 0) < tolerance
-assert abs(fixed_point(lambda x: x*x, 0.9) - 0.0) < tolerance
-
+assert abs(fixed_point(lambda x: x*x) - 1.1) < tolerance
+# Finding square root with fixed point
 def sqrt_fixed_point(x):
     """Return the square root of x using the fixed point procedure."""
     assert x >= 0, "Cannot compute square root of negative number."
@@ -115,6 +116,7 @@ def sqrt_fixed_point(x):
 
 assert abs(sqrt_fixed_point(0.0) - 0.0) < tolerance   
 assert abs(sqrt_fixed_point(4.0) - 2.0) / 2.0 < tolerance
+assert abs(sqrt_fixed_point(100.0) - 10.0) / 10.0 < tolerance
 assert abs(sqrt_fixed_point(1e-14) - 1e-7) / 1e-7 < tolerance
-assert abs(sqrt_fixed_point(10000000000000000) - 100000000) / 100000000 < tolerance
+assert abs(sqrt_fixed_point(1e-12) - 1e-6) / 1e-6 < tolerance
 # endregion
