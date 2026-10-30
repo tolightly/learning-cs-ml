@@ -86,15 +86,15 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
     previous_guess = first_guess
     guess = f(previous_guess)
     # Predicate that defines condition for stopping loop
-    def is_not_good_enough(guess, previous_guess):
+    def is_good_enough(guess, previous_guess):
         # Guard for division by 0 in process evaluating relative error 
         if guess == 0:
-            return abs(guess - previous_guess) >= tolerance
+            return abs(guess - previous_guess) < tolerance
         else:
-            return abs((guess - previous_guess) / guess) >= tolerance
+            return abs((guess - previous_guess) / guess) < tolerance
     # Loop
     # Guard: stops the loop when differene between guess and previous guess is less than tolerance
-    while is_not_good_enough(guess, previous_guess):
+    while not is_good_enough(guess, previous_guess):
         # Updating previous_guess and guess
         previous_guess = guess
         guess = f(guess)
@@ -105,7 +105,6 @@ assert abs(fixed_point(lambda x: x/2 - 1) + 2.0) < 1e-5
 assert abs(fixed_point(math.cos) - 0.739084868) < tolerance
 assert abs(fixed_point(lambda x: x/2, 1.0) - 0) < tolerance
 assert abs(fixed_point(lambda x: x/2, -10.0) - 0) < tolerance
-assert abs(fixed_point(lambda x: x*x) - 1.1) < tolerance
 # Finding square root with fixed point
 def sqrt_fixed_point(x):
     """Return the square root of x using the fixed point procedure."""
