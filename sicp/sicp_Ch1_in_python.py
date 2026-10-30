@@ -86,12 +86,12 @@ def fixed_point(f: Callable[[float], float], first_guess=1.0) -> float:
     previous_guess = first_guess
     guess = f(previous_guess)
     # Predicate that defines condition for stopping loop
-    def is_good_enough(guess, previous_guess):
+    def is_good_enough(next_guess, guess):
         # Guard for division by 0 in process evaluating relative error 
-        if guess == 0:
-            return abs(guess - previous_guess) < tolerance
+        if next_guess == 0:
+            return abs(next_guess - guess) < tolerance
         else:
-            return abs((guess - previous_guess) / guess) < tolerance
+            return abs((next_guess - guess) / next_guess) < tolerance
     # Loop
     # Guard: stops the loop when differene between guess and previous guess is less than tolerance
     while not is_good_enough(guess, previous_guess):
