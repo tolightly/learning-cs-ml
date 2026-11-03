@@ -46,8 +46,6 @@ def is_equal_sets(set1: list, set2: list) -> bool:
         return False
     i = 0
     i_max = cardinality(set1)
-    j = 0
-    j_max = cardinality(set2)
     while i < i_max:
         if not is_member(set1[i], set2):
             return False
@@ -102,6 +100,9 @@ def diffence_sets(set1: list, set2: list) -> list:
     return result
 
 def complement_set(set: list, universal: list) -> list:
+    if not is_subset(set, universal):
+        raise ValueError("Set must be a subset of universal")
+    
     i = 0
     i_max = cardinality(universal)
     result = []
@@ -110,8 +111,12 @@ def complement_set(set: list, universal: list) -> list:
             result.append(universal[i])
         i = i + 1
     return result
+def complement_set_2(set: list, universal: list) -> list:
+    if not is_subset(set, universal):
+            raise ValueError("Set must be a subset of universal")
+    return diffence_sets(universal, set)
 
-#def powerset(set: list) -> list:
+# def powerset(set: list) -> list:
 
 
 l_1 = [1, 2, [2, 3], 3, [4, 4], [3, 2], 5, [2, [2, 3]], [2, 3]]
@@ -137,5 +142,6 @@ print("Intersection sets: ", intersection_sets(s_1, s_2))
 print("Is equal? ", is_equal_sets(eq_1, eq_2))
 print("Is subset? ", is_subset(subs_3, s_1))
 print("Difference of sets: ", diffence_sets(s_1, s_2))
-print("Complement: ", complement_set(s_1, s_2))
+print("Complement: ", complement_set(subs_1, subs_2))
+print("Complement_2: ", complement_set(subs_1, subs_2))
 #rint("No dubs: ", no_dubs(l_1))
