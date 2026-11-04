@@ -23,11 +23,19 @@ def no_dubs(set: list) -> bool:
         i = i + 1
     return True
 
+def is_set(set: list) -> bool:
+    if not no_dubs(set):
+        return False
+    return True
+
 def is_member(element, set: list) -> bool:
     i = 0
     i_max = cardinality(set)
     while i < i_max:
-        if element == set[i]:
+        if isinstance(element, list) and isinstance(set[i], list):
+            if is_equal_sets_2(element, set[i]):
+                return True
+        elif element == set[i]:
             return True
         i = i + 1
     return False
@@ -42,6 +50,10 @@ def is_subset(subset: list, set: list) -> bool:
     return True
     
 def is_equal_sets(set1: list, set2: list) -> bool:
+    if not is_set(set1):
+       set1 = myset(set1) 
+    if not is_set(set2):
+        set2 = myset(set2)
     if cardinality(set1) != cardinality(set2):
         return False
     i = 0
@@ -51,6 +63,14 @@ def is_equal_sets(set1: list, set2: list) -> bool:
             return False
         i = i + 1
     return True
+def is_equal_sets_2(set1: list, set2: list) -> bool:
+    if not is_set(set1):
+       set1 = myset(set1) 
+    if not is_set(set2):
+        set2 = myset(set2)
+    if is_subset(set1, set2) and is_subset(set2, set1):
+        return True
+    return False
 
 def cartesian_product(set1: list, set2: list) -> list:
     i = 0
@@ -118,6 +138,7 @@ def complement_set_2(set: list, universal: list) -> list:
 
 # def powerset(set: list) -> list:
 
+# Asserts
 
 l_1 = [1, 2, [2, 3], 3, [4, 4], [3, 2], 5, [2, [2, 3]], [2, 3]]
 l_2 = [[4, 4], 5, 6, 7, 8, 9]
@@ -144,4 +165,13 @@ print("Is subset? ", is_subset(subs_3, s_1))
 print("Difference of sets: ", diffence_sets(s_1, s_2))
 print("Complement: ", complement_set(subs_1, subs_2))
 print("Complement_2: ", complement_set(subs_1, subs_2))
-#rint("No dubs: ", no_dubs(l_1))
+#print(is_equal_sets([1,1,2], [1,2,3]))
+print("I member (set)?", is_member([3,2], [[2,3]]))
+print(is_subset([], [1,2]))
+print(is_subset([None], [1,2]))
+print(cardinality([]))
+print(cardinality([None]))
+print(is_member(None, [1,2]))
+print("Is equal? test 2", is_equal_sets([[3, 2]], [[2, 3]]))
+print("Is equal_2? test 2", is_equal_sets_2([[3, 2]], [[2, 3]]))
+print("Is equal_2? test 3", is_equal_sets_2(l_1, l_2))
