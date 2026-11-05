@@ -1,25 +1,22 @@
 def myset(lst: list) -> list:
-    count = 0
-    length = cardinality(lst)
+    i = 0
+    i_max = cardinality(lst)
     result = []
-    while count < length:
-        if not is_member(lst[count], result):
-            result.append(lst[count])
-        count = count + 1
+    while i < i_max:
+        if not is_member(lst[i], result):
+            result.append(lst[i])
+        i = i + 1
     return result
 
 def cardinality(set: list) -> int:
     return len(set)
 
-def no_dubs(set: list) -> bool:
+def no_dubs(set: list) -> list:
     i = 0
     i_max = cardinality(set)
     while i < i_max:
-        j = i + 1
-        while j < i_max:
-            if set[i] == set[j]:
-                return False
-            j = j + 1
+        if is_member(set[i], set[i+1:]):
+            return False
         i = i + 1
     return True
 
@@ -33,7 +30,7 @@ def is_member(element, set: list) -> bool:
     i_max = cardinality(set)
     while i < i_max:
         if isinstance(element, list) and isinstance(set[i], list):
-            if is_equal_sets_2(element, set[i]):
+            if is_equal_sets(element, set[i]):
                 return True
         elif element == set[i]:
             return True
@@ -50,20 +47,6 @@ def is_subset(subset: list, set: list) -> bool:
     return True
     
 def is_equal_sets(set1: list, set2: list) -> bool:
-    if not is_set(set1):
-       set1 = myset(set1) 
-    if not is_set(set2):
-        set2 = myset(set2)
-    if cardinality(set1) != cardinality(set2):
-        return False
-    i = 0
-    i_max = cardinality(set1)
-    while i < i_max:
-        if not is_member(set1[i], set2):
-            return False
-        i = i + 1
-    return True
-def is_equal_sets_2(set1: list, set2: list) -> bool:
     if not is_set(set1):
        set1 = myset(set1) 
     if not is_set(set2):
@@ -117,21 +100,9 @@ def diffence_sets(set1: list, set2: list) -> list:
         if not is_member(set1[i], set2):
             result.append(set1[i])
         i = i + 1
-    return result
+    return myset(result)
 
 def complement_set(set: list, universal: list) -> list:
-    if not is_subset(set, universal):
-        raise ValueError("Set must be a subset of universal")
-    
-    i = 0
-    i_max = cardinality(universal)
-    result = []
-    while i < i_max:
-        if not is_member(universal[i], set):
-            result.append(universal[i])
-        i = i + 1
-    return result
-def complement_set_2(set: list, universal: list) -> list:
     if not is_subset(set, universal):
             raise ValueError("Set must be a subset of universal")
     return diffence_sets(universal, set)
@@ -165,7 +136,7 @@ print("Is subset? ", is_subset(subs_3, s_1))
 print("Difference of sets: ", diffence_sets(s_1, s_2))
 print("Complement: ", complement_set(subs_1, subs_2))
 print("Complement_2: ", complement_set(subs_1, subs_2))
-#print(is_equal_sets([1,1,2], [1,2,3]))
+print(is_equal_sets([1,1,2], [1,2,3]))
 print("I member (set)?", is_member([3,2], [[2,3]]))
 print(is_subset([], [1,2]))
 print(is_subset([None], [1,2]))
@@ -173,5 +144,6 @@ print(cardinality([]))
 print(cardinality([None]))
 print(is_member(None, [1,2]))
 print("Is equal? test 2", is_equal_sets([[3, 2]], [[2, 3]]))
-print("Is equal_2? test 2", is_equal_sets_2([[3, 2]], [[2, 3]]))
-print("Is equal_2? test 3", is_equal_sets_2(l_1, l_2))
+print("Is equal_2? test 2", is_equal_sets([[3, 2]], [[2, 3]]))
+print("Is equal_2? test 3", is_equal_sets(l_1, l_2))
+print(cartesian_product([1,2], [1,2]))
