@@ -7,11 +7,17 @@ def myset(lst: list) -> list:
             result.append(lst[i])
         i = i + 1
     return result
+def make_pair(first, second) -> tuple:
+    return (first, second)
+def first(tuple: tuple):
+    return tuple[0]
+def second(tuple: tuple):
+    return tuple[1]
 
 def cardinality(set: list) -> int:
     return len(set)
 
-def no_dubs(set: list) -> list:
+def no_dubs(set: list) -> bool:
     i = 0
     i_max = cardinality(set)
     while i < i_max:
@@ -63,7 +69,7 @@ def cartesian_product(set1: list, set2: list) -> list:
     while i < i_max:
         j = 0
         while j < j_max:
-            result.append([set1[i], set2[j]])
+            result.append(make_pair(set1[i], set2[j]))
             j = j + 1
         i = i + 1
     return myset(result)
