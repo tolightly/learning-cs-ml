@@ -116,40 +116,32 @@ def complement_set(set: list, universal: list) -> list:
 # def powerset(set: list) -> list:
 
 # Asserts
-
-l_1 = [1, 2, [2, 3], 3, [4, 4], [3, 2], 5, [2, [2, 3]], [2, 3]]
-l_2 = [[4, 4], 5, 6, 7, 8, 9]
-eq_1 = [1, 2, [2, 3], 3, [4, 4], 5]
-eq_2 = [[4, 4], 3, 1, 5, 2, [2, 3]]
-subs_1 = [1, 2, 3]
-subs_2 = [1, 3, 7, 2, 4, 5, 6]
-subs_3 = [1, [3, 2]]
-s_1 = myset(l_1)
-s_2 = myset(l_2)
-print("list is: ", l_1)
-print("myset is: ", s_1)
-print("cardinality is: ", cardinality(s_1))
-print("is 4 in set?", is_member(4, s_1))
-print("is [4, 4] in set?", is_member([4, 4], s_1))
-print("is [3, 4] in set?", is_member([3, 4], s_1))
-print("is 6 in set?", is_member(6, s_1))
-print("is None in set?", is_member(None, s_1))
-print("Cartesian product: ", cartesian_product(s_1, s_2))
-print("Union sets: ", union_sets(s_1, s_2))
-print("Intersection sets: ", intersection_sets(s_1, s_2))
-print("Is equal? ", is_equal_sets(eq_1, eq_2))
-print("Is subset? ", is_subset(subs_3, s_1))
-print("Difference of sets: ", diffence_sets(s_1, s_2))
-print("Complement: ", complement_set(subs_1, subs_2))
-print("Complement_2: ", complement_set(subs_1, subs_2))
-print(is_equal_sets([1,1,2], [1,2,3]))
-print("I member (set)?", is_member([3,2], [[2,3]]))
-print(is_subset([], [1,2]))
-print(is_subset([None], [1,2]))
-print(cardinality([]))
-print(cardinality([None]))
-print(is_member(None, [1,2]))
-print("Is equal? test 2", is_equal_sets([[3, 2]], [[2, 3]]))
-print("Is equal_2? test 2", is_equal_sets([[3, 2]], [[2, 3]]))
-print("Is equal_2? test 3", is_equal_sets(l_1, l_2))
-print(cartesian_product([1,2], [1,2]))
+assert(no_dubs([[], []])) == False
+assert(no_dubs([[2, 3], [3, 2]])) == False
+assert(no_dubs([[2, 3], [2, [2, 3]]])) == True
+assert(no_dubs([make_pair(1, 2), make_pair(2, 1)])) == True
+assert(is_member([], [1, 2, 3])) == False
+assert(is_member([], [[], 1, 2, 3])) == True
+assert(is_member([2, 3], [[3, 1], [1, [2, 3]]])) == False
+assert(is_member([2, 3], [[3, 2], [1, [2, 1]]])) == True
+assert(is_member(make_pair(2, 3), [make_pair(3, 2)])) == False
+assert(is_member(make_pair(2, 3), [make_pair(2, 3)])) == True
+assert(is_subset([], [1, 2])) == True
+assert(is_subset([[3, 4]], [2, 3, 4])) == False
+assert(is_subset([[3, 4]], [2, [3, 4]])) == True
+assert(is_subset([make_pair(1, 2)], [make_pair(2, 1), make_pair(1, 1)])) == False
+assert(is_subset([make_pair(1, 2)], [make_pair(1, 2), make_pair(1, 1)])) == True
+assert(is_equal_sets([], [[]])) == False
+assert(is_equal_sets([1, 1, 2], [1, 2])) == True
+assert(is_equal_sets([1, [2, 3]], [1, 2, 3])) == False
+assert(is_equal_sets([make_pair(1, 2)], [make_pair(2, 1)])) == False
+assert(cardinality(cartesian_product([1, 2, 2, 3], [1, 2, 1, 3]))) == 9
+assert(cardinality(cartesian_product([1, []], [1, []]))) == 4
+assert(cardinality(union_sets([1, 2, 3], [1, 2, 3]))) == 3
+assert(cardinality(union_sets([1, 2, 3], [1, 2, 3, []]))) == 4
+assert(cardinality(intersection_sets([1, 2, 2, 3], [1, 2, 3, 3, []]))) == 3
+assert(cardinality(intersection_sets([], [1, 2, 3, []]))) == 0
+assert(cardinality(intersection_sets([[]], [1, 2, 3, []]))) == 1
+assert(cardinality(diffence_sets([1, 2, 3, 2], [1, 2, 3, []]))) == 0
+assert(cardinality(diffence_sets([1, 2, 3, 3, []], [1, 2, 3]))) == 1
+assert(cardinality(diffence_sets([1, 2, 3, 3, []], [1, 2, 3, 4, 4, 1, 2, [], [[]]]))) == 2
