@@ -98,7 +98,7 @@ def intersection_sets(set1: list, set2: list) -> list:
         i = i + 1
     return result
 
-def diffence_sets(set1: list, set2: list) -> list:
+def difference_sets(set1: list, set2: list) -> list:
     i = 0
     i_max = cardinality(set1)
     result = []
@@ -111,7 +111,7 @@ def diffence_sets(set1: list, set2: list) -> list:
 def complement_set(set: list, universal: list) -> list:
     if not is_subset(set, universal):
             raise ValueError("Set must be a subset of universal")
-    return diffence_sets(universal, set)
+    return difference_sets(universal, set)
 
 def powerset(set: list) -> list:
     if cardinality(set) == 0:
@@ -486,7 +486,7 @@ assert_same_set(
 # 11. diffence_sets()
 # ============================================================
 
-difference_result = diffence_sets([1, 2, 3], [2, 4])
+difference_result = difference_sets([1, 2, 3], [2, 4])
 
 assert is_set(difference_result)
 
@@ -494,17 +494,17 @@ assert set(difference_result) == {1, 3}
 
 
 assert_same_set(
-    diffence_sets([1, 2, 3], [1, 2, 3]),
+    difference_sets([1, 2, 3], [1, 2, 3]),
     []
 )
 
 assert_same_set(
-    diffence_sets([1, 2, 3], []),
+    difference_sets([1, 2, 3], []),
     [1, 2, 3]
 )
 
 assert_same_set(
-    diffence_sets(
+    difference_sets(
         [[1, 2], [3, 4]],
         [[2, 1], [5, 6]]
     ),
@@ -514,7 +514,7 @@ assert_same_set(
 
 # (A \ B) ∩ B = ∅
 
-difference = diffence_sets([1, 2, 3], [2, 4])
+difference = difference_sets([1, 2, 3], [2, 4])
 
 assert_same_set(
     intersection_sets(difference, [2, 4]),
@@ -616,3 +616,4 @@ assert_same_set(
     powerset([[1, 2]]),
     [[], [[1, 2]]]
 )
+assert cardinality(powerset([1, 2, 3])) == 2**cardinality([1, 2, 3])
