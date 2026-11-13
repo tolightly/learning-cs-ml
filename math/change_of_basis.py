@@ -11,8 +11,12 @@ def is_equal_lists(l1, l2, tolerance = 1e-6):
     i = 0
     while i < len(l1):
         if isinstance(l1[i], float) or isinstance(l2[i], float):
-            if abs((l1[i]-l2[i])/l1[i]) > tolerance:
-                return False
+            if l1[i] == 0 or l2[i] == 0:
+                if abs(l1[i]-l2[i]) > tolerance:
+                    return False
+            else:
+                if abs((l1[i]-l2[i])/l1[i]) > tolerance:
+                    return False
         else:
             if l1[i] != l2[i]:
                 return False
@@ -43,6 +47,29 @@ def coords(v, b1, b2):
     assert is_equal_lists(combine(a_new, b_new, b1, b2), list(v))
     return [a_new, b_new]
 
-print(combine(7, 4, [1, 2], [3, 1]))
-print(coords([7, 4], [1, 2], [3, 1]))
-coords([7, 4], [1, 2], [2, 4])
+def coords_2(v, b1, b2):
+    x = v[0]
+    y = v[1]
+    p = b1[0]
+    q = b1[1]
+    r = b2[0]
+    s = b2[1]
+    b_new = 0
+    a_new = 0
+
+    if (s*p - q*r == 0):
+        raise ValueError("Determinant == 0")
+    a_new = (r*y - s*x) / (q*r - s*p)
+    b_new = (p*y - q*x) / (s*p - q*r)
+             
+    assert is_equal_lists(combine(a_new, b_new, b1, b2), list(v))
+    return [a_new, b_new]
+
+print(coords_2([7, 4], [0, 1], [1, 0]))
+#print(coords_2([7, 4], [1, 2], [2, 4]))
+print(coords_2([7, 4], [1, 2], [0, 1]))
+#print(coords_2([3, 6], [1, 2], [2, 4]))
+print(0.1 + 0.2 == 0.3)
+print(abs((0.1 + 0.2) - 0.3) < 1e-9)
+print(coords_2([3, 5], [0, 1], [1, 1]))
+print(is_equal_lists([1e-17, 5.0], [0, 5]))
