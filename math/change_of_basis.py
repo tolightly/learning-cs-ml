@@ -66,3 +66,4 @@ try:
 except ValueError:
     raised = True
 assert raised
+print(coords([3,1],[1,1],[1,-1]))
